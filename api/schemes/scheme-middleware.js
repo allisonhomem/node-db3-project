@@ -34,7 +34,7 @@ const checkSchemeId = async (req, res, next) => {
     "message": "invalid scheme_name"
   }
 */
-const validateScheme = async (req, res, next) => {
+const validateScheme = (req, res, next) => {
   try {
     const {scheme_name} = req.body;
 
@@ -60,7 +60,19 @@ const validateScheme = async (req, res, next) => {
   }
 */
 const validateStep = (req, res, next) => {
+  try {
+    const {instructions, step_number} = req.body
 
+    if (typeof instructions !== "string" || typeof step_number !== "number" || step_number < 1) {
+      res.status(400).json({message: "invalid step"})
+    }
+    else {
+      next();
+    }
+  }
+  catch (err) {
+    next(err);
+  }
 }
 
 module.exports = {
